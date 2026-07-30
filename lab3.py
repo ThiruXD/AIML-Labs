@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the dataset
-df = pd.read_csv("workload_data.csv")
+df = pd.read_csv("asset/workload_data.csv")
 print("Dataset loaded:")
 print(df)
 print("\n" + "=" * 60)
