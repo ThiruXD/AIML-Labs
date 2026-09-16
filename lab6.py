@@ -86,3 +86,33 @@ def display_tree(node, depth=0):
 decision_tree = id3(data, FEATURES, TARGET_ATTR)
 print("Resulting Decision Tree:")
 display_tree(decision_tree)
+
+
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+
+# Dataset
+raw_data = {
+    'Outlook': ['Sunny', 'Sunny', 'Overcast', 'Rain', 'Rain', 'Rain', 'Overcast', 'Sunny', 'Sunny', 'Rain', 'Sunny', 'Overcast', 'Overcast', 'Rain'],
+    'Temperature': ['Hot', 'Hot', 'Hot', 'Mild', 'Cool', 'Cool', 'Cool', 'Mild', 'Cool', 'Mild', 'Mild', 'Mild', 'Hot', 'Mild'],
+    'Humidity': ['High', 'High', 'High', 'High', 'Normal', 'Normal', 'Normal', 'High', 'Normal', 'Normal', 'Normal', 'High', 'Normal', 'High'],
+    'Wind': ['Weak', 'Strong', 'Weak', 'Weak', 'Weak', 'Strong', 'Strong', 'Weak', 'Weak', 'Weak', 'Strong', 'Strong', 'Weak', 'Strong'],
+    'Play Tennis': ['No', 'No', 'Yes', 'Yes', 'Yes', 'No', 'Yes', 'No', 'Yes', 'Yes', 'Yes', 'Yes', 'Yes', 'No']
+}
+
+df = pd.DataFrame(raw_data)
+
+# One-hot encode categorical features for sklearn
+X = pd.get_dummies(df[['Outlook', 'Temperature', 'Humidity', 'Wind']], drop_first=False)
+y = df['Play Tennis']
+
+# Fit ID3 equivalent (entropy-based)
+clf = DecisionTreeClassifier(criterion='entropy')
+clf.fit(X, y)
+
+# Render plot
+plt.figure(figsize=(12, 8))
+plot_tree(clf, feature_names=list(X.columns), class_names=['No', 'Yes'], filled=True, rounded=True)
+plt.title("Decision Tree Visualization (Scikit-Learn)", fontsize=14)
+plt.show()
